@@ -17,15 +17,14 @@ export const Grid = styled.div`
     background-color: #128ac6;
     //margin-color: #128ac6;
     display: grid;
+
     tr:hover {
         background-color: #3390ff;
     }
     a {
         color: #fff;
     }
-    #a1 {
-        margin-bottom: 10px;
-    }
+
     height: 100%;
     outline-width: 100px;
 
@@ -42,6 +41,19 @@ export const Grid = styled.div`
         display: flex;
         flex-direction: row;
         align-items: flex-end;
+    }
+    .Header #a1 {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    .Header #a1 div {
+        margin: 7px;
+    }
+    .Header #a1 #bFecharVenda #btnFechar {
+        align-items: flex-start;
+        justify-content: flex-end;
     }
     .h1cabeçado {
         font-size: 20px;

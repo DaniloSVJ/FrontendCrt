@@ -130,15 +130,14 @@ export const Form = styled.div`
         vertical-align: bottom;
     }
 
-    tr {
-        width: 100%;
-        background-color: #fff;
-    }
     td {
         background-color: #fff;
         color: #000;
     }
-    tr:hover {
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    .tdh:hover {
         background-color: #3390ff;
     }
 
@@ -178,6 +177,11 @@ export const Form = styled.div`
         width: 100px;
         padding: 4px;
     }
+
+    input[type='number']::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
     .Valor {
         text-align: right;
         width: 100px;
@@ -186,5 +190,13 @@ export const Form = styled.div`
         text-align: right;
         padding-right: 4px;
         background-color: #c7c7c7;
+    }
+
+    tr {
+        width: 100%;
+        background-color: #000;
+        &:hover {
+            background-color: #3390ff;
+        }
     }
 `;

@@ -89,15 +89,23 @@ const PDV: React.FC = () => {
     useEffect(() => {
         api.delete('itemvendaAcessoria');
     }, []);
-
-    let ordem = 0;
-    const id_vendas = 0;
+    const [id_vendas, setId_vendas] = useState('');
+    const [ordem, setOrdem] = useState('');
+    const [id_cliente, setId_cliente] = useState(0);
+    const [funcionario, setFuncionario] = useState('');
 
     useEffect(() => {
+        let vord = 0;
         async function handleAddRepository3(): Promise<void> {
             let nameP = '';
             let idProd = '';
             let codProd = '';
+            if (id_vendas === '') {
+                setId_vendas('0');
+            }
+            if (ordem === '') {
+                setOrdem('0');
+            }
 
             if (produto) {
                 nameP = produto.nome ? produto.nome : '';
@@ -118,14 +126,15 @@ const PDV: React.FC = () => {
 
                 if (ifyouhave !== rotaId) {
                     if (tam === 0) {
-                        ordem = 1;
+                        setOrdem('1');
                     } else if (tam > 0) {
-                        ordem = tam + 1;
+                        vord = tam + 1;
+                        setOrdem(vord.toString());
                     }
 
                     await api.post('itemvendaAcessoria', {
-                        id_vendas,
-                        ordem,
+                        id_vendas: Number(id_vendas),
+                        ordem: Number(ordem),
                         id_produtos: idProd,
                         qtdvendido,
                         valor_vendido,
@@ -183,11 +192,15 @@ const PDV: React.FC = () => {
     }, [nome_produto]);
 
     const fecharVenda = useCallback(() => {
-        history.push({
-            pathname: '/secondpage',
-            search: '?query=abc',
-            state: { detail: 'some_value' },
-        });
+        async function CriarVenda(): Promise<void> {
+            await setId_cliente(1);
+            await setFuncionario('Fernando');
+            await api.post('venda', {
+                id_cliente,
+                funcionario,
+            });
+        }
+        CriarVenda();
     }, []);
 
     return (
@@ -195,15 +208,21 @@ const PDV: React.FC = () => {
             <Grid onKeyDown={e => setKeyT(e.key)}>
                 <div className="Header">
                     <nav id="a1">
-                        <a href="#bg" onKeyUp={e => setChamar('chamar')}>
-                            Lista de Clientes
-                        </a>
-                        <a
-                            href={`/formapagamento/?${id_vendas}`}
-                            onKeyUp={e => fecharVenda}
-                        >
-                            Fechar Venda
-                        </a>
+                        <div>
+                            <a href="#bg" onKeyUp={e => setChamar('chamar')}>
+                                Lista de Clientes
+                            </a>
+                        </div>
+                        <div id="bFecharVenda">
+                            <div id="btnFechar">
+                                <a
+                                    onClick={e => fecharVenda}
+                                    href={`/formapagamento/?${id_vendas}`}
+                                >
+                                    Fechar Venda
+                                </a>
+                            </div>
+                        </div>
                     </nav>
                     <div id="dadosIniciais">
                         <div>
@@ -306,9 +325,7 @@ const PDV: React.FC = () => {
                         <a href="/" onClick={e => setChamar('')}>
                             Fechar
                         </a>
-                        <div id="divmodal">
-                            <Tables />
-                        </div>
+                        <div id="divmodal" />
                     </div>
                 </div>
             </Grid>

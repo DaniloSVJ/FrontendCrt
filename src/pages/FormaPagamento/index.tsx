@@ -24,12 +24,13 @@ const FormaPagamento: React.FC = () => {
     const [formaPNome, setFormaPNome] = useState('');
     const [formaPNomed, setFormaPNomed] = useState([]);
     const [isSelected, setIsSelected] = useState(false);
+    const [valorInput, setValorInput] = useState(0);
     const tableTrTd = useRef<HTMLTableElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const selectRef = useRef<HTMLSelectElement>(null);
     const [formaPId, setFormaPId] = useState(1);
     const [totaVenda, setTotaVenda] = useState(0);
-    console.log(`O ID da Venda é >${formaPNome}<: ${idVenda}`);
+
     const [options, setOption] = useState([
         {
             id: 0,
@@ -65,15 +66,13 @@ const FormaPagamento: React.FC = () => {
     useEffect(() => {
         async function handleselect(): Promise<void> {
             verInput = inputRef.current?.value ? inputRef.current?.value : '';
-
             const forma = options.find(o => o.id === Number(formaPId))?.nome;
-
             if (verInput === '') {
                 await setFormPagamento([
                     {
                         id: formaPId.toString(),
                         forma: forma || '',
-                        valor: verInput.toString(),
+                        valor: valorInput.toString(),
                     },
                 ]);
             } else {
@@ -82,14 +81,10 @@ const FormaPagamento: React.FC = () => {
                     {
                         id: formaPId.toString(),
                         forma: dadosformPagamento,
-                        valor: verInput.toString(),
+                        valor: valorInput.toString(),
                     },
                 ]);
             }
-            console.log(
-                `dfdf ${options.find(d => d.id === Number(formaPId))?.nome}`,
-            );
-            console.log(`dfdf ${selectedRef.current?.selectedOptions}`);
         }
         handleselect();
     }, [isSelected]);
@@ -146,7 +141,14 @@ const FormaPagamento: React.FC = () => {
                                         >
                                             Valor
                                         </h1>
-                                        <input type="text" />
+                                        <input
+                                            type="number"
+                                            onChange={e =>
+                                                setValorInput(
+                                                    Number(e.target.value),
+                                                )
+                                            }
+                                        />
                                     </div>
                                     <div>
                                         <h1
@@ -170,16 +172,26 @@ const FormaPagamento: React.FC = () => {
                                                 <th className="idQ">Valor </th>
                                             </tr>
                                         </thead>
+
                                         <thead>
                                             {formPagamento
                                                 .sort((a, b) =>
                                                     a.id > b.id ? 1 : -1,
                                                 )
                                                 .map(dados => (
-                                                    <tr key={dados.id}>
-                                                        <td>{dados.id}</td>
-                                                        <td>{dados.forma}</td>
-                                                        <td>{dados.valor}</td>
+                                                    <tr
+                                                        className="tdh"
+                                                        key={dados.id}
+                                                    >
+                                                        <td className="tdh">
+                                                            {dados.id}
+                                                        </td>
+                                                        <td className="tdh">
+                                                            {dados.forma}
+                                                        </td>
+                                                        <td className="tdh">
+                                                            {dados.valor}
+                                                        </td>
                                                     </tr>
                                                 ))}
                                         </thead>
@@ -189,7 +201,7 @@ const FormaPagamento: React.FC = () => {
                                     <button
                                         className="btm"
                                         type="button"
-                                        onClick={e => incluir}
+                                        onClick={e => setIsSelected(true)}
                                     >
                                         Incluir - F6
                                     </button>
