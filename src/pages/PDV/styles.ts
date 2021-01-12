@@ -14,9 +14,20 @@ export const Title = styled.h1`
 `;
 
 export const Grid = styled.div`
-    //background-color: #e0ffff;
-
+    background-color: #128ac6;
+    //margin-color: #128ac6;
     display: grid;
+    tr:hover {
+        background-color: #3390ff;
+    }
+    a {
+        color: #fff;
+    }
+    #a1 {
+        margin-bottom: 10px;
+    }
+    height: 100%;
+    outline-width: 100px;
 
     grid-template-areas:
         'header header header header header header'
@@ -27,10 +38,46 @@ export const Grid = styled.div`
 
         //position: center;
     }
-    #teste11 {
+    #dadosIniciais {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+    }
+    .h1cabeçado {
+        font-size: 20px;
+        color: #fff;
+    }
+    .inputcabeçalho {
+        font-size: 13px;
+        color: #000;
+        height: 20px;
+        width: 70px;
+    }
+    #h1doinput {
+        margin-bottom: 8px;
+        margin-left: 4px;
+        margin-right: 4px;
+        width: 100%;
+    }
+    .h1dadosInput {
+        background-color: #b7b7b7;
+        text-align: left;
+        padding: 4px;
+        font-size: 18px;
+        color: #000;
+        height: 28.5px;
+        width: 100%;
+        border-radius: 4px;
+    }
+    #clash1 {
         text-align: center;
     }
-    div.Header h1 {
+
+    Link {
+        margin: 15px;
+    }
+
+    div.Header #clash1 {
         background-color: #fff;
         padding: 15px;
         font-size: 50px;
@@ -38,13 +85,6 @@ export const Grid = styled.div`
         border-radius: 4px;
         margin-bottom: 10px;
         border-radius: 4px;
-        /* background-color: #fff;
-        padding: 15px;
-        // display: flex;
-        font-size: 50px;
-        // width: 50%;
-        margin-bottom: 10px;
-        border-radius: 4px; */
     }
 
     .MenuDadosVenda {
@@ -60,6 +100,7 @@ export const Grid = styled.div`
         font-size: 30px;
         //width: 350px;
     }
+
     .h1Iput {
         color: #fff;
         font-size: 30px;
@@ -100,33 +141,33 @@ export const Grid = styled.div`
         font-family: 'Arial';
         border-collapse: collapse;
         width: 100%;
+        height: 320px;
+        text-align: left;
+
+        text-align: left;
+        font-style: normal;
+        width: 100%;
+        font-weight: 300 !important;
+
+        background-color: #ffffcb;
+        color: #000;
+        vertical-align: bottom;
     }
 
-    #customers td {
-        background-color: #ffffcb;
+    #customers .idQ {
         text-align: center;
     }
 
-    #customers tr:nth-child(even) {
-        background-color: #ffffcb;
-    }
-
-    #customers tr:hover {
-        background-color: #ffffcb;
+    #customers .cvalor {
+        text-align: right;
     }
 
     #customers th {
-        padding: 4px;
-        text-align: left;
-        font-family: 'Arial';
-        font-style: normal;
-        font-weight: 300 !important;
-        border-bottom: 1px dotted #000;
         background-color: #ffffcb;
-        color: #000;
+        border-bottom: 1px dotted #000;
     }
-    th {
-        vertical-align: bottom;
+    #customers td {
+        background-color: #ffffcb;
     }
 
     input,
@@ -143,13 +184,89 @@ export const Grid = styled.div`
         &::placeholder {
             color: #a8a8b3;
         }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    }
+    #bg {
+        width: 100%;
+        height: 100%;
+        top: 10px;
+        left: 0;
+        position: fixed;
+        display: none;
+    }
+    .box {
+        height: 405px;
+        background-color: #fff;
+    }
+    #bg:target {
+        display: block;
+    }
+    #bg:target ~ .box {
+        top: 150px;
+        transition: all 0.3s;
+        transition-delay: 0.2s;
+        height: 405px;
+        background-color: #fff;
+    }
+    .box {
+        width: 600px;
+        height: 405px;
+        position: absolute;
+        margin-left: -360px;
+    }
+    #divmodal {
+        margin: 20px;
+        background-color: #fff;
+    }
+
+    .box {
+        weight: 500px;
+        height: 500px;
+        margin: 30px;
+
+        border: 1px solid #fff;
+        background-color: #128ac6;
+    }
+    .box2 {
+        height: 500px;
+        background-color: #fff;
     }
 `;
-
-// export const Error = styled.span`
-//     display: block;
-//     color: #c53030;
-//     margin-top: 8px;
-// `;
 
 export const Repositories = styled.div``;

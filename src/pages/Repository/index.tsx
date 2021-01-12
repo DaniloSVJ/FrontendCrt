@@ -48,9 +48,9 @@ const Repository: React.FC = () => {
         <>
             <Header>
                 <img src={logoImg} alt="GitHub Explorer" />
-                <Link to="/">
+                <Link to="/PDV">
                     <FiChevronLeft size={16} />
-                    Voltar
+                    Ir Para PDV
                 </Link>
             </Header>
             {repository && (

@@ -1,16 +1,18 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
-// import Dashboard from '../pages/Dashboard/index';
-// import Repository from '../pages/Repository/index';
+import FormaPagamento from '../pages/FormaPagamento/index';
+import Produtos from '../pages/Produtos/index';
 import PDV from '../pages/PDV/index';
 // Switch vai garantir que apenas uma rota seja visivel
+// //<Route path="/" exact component={Produtos} />
 const Routes: React.FC = () => (
-    <Switch>
+    <BrowserRouter>
         <Route path="/" exact component={PDV} />
-        {/* <Route path="/" exact component={Dashboard} />
-        <Route path="/repositories/:repository+" component={Repository} /> */}
-    </Switch>
+        <Route path="/formapagamento" exact component={FormaPagamento} />
+
+        <Route path="/produtos" exact component={Produtos} />
+    </BrowserRouter>
 );
 
 export default Routes;

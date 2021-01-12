@@ -1,23 +1,74 @@
-import React, { TableHTMLAttributes } from 'react';
+import React, { TableHTMLAttributes, useEffect, useState } from 'react';
 // import { Fi } from 'react-icons/fi';
 // import { FiChevronRight } from 'react-icons/fi';
 // import { Link } from 'react-router-dom';
+import api from '../../services/api';
 import { Table } from './styles';
 
-interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
-    label: string;
-    name: string;
-    options: Array<{
-        value: string;
-        label: string;
-    }>;
+interface Produto {
+    id: string;
+    nome: string;
+    quantidade: number;
+    valor: number;
 }
-const Tables: React.FC<TableProps> = () => {
-    // const { produto, setProduto } = useState('');
-
+const Tables: React.FC = () => {
+    const [dadosCliente, setDadosCliente] = useState([
+        {
+            id: '',
+            nome: '',
+            bairro: '',
+            cep: '',
+            cidade: '',
+            uf: '',
+            telefone: '',
+            CPF: '',
+            RG: '',
+        },
+    ]);
+    useEffect(() => {
+        api.get('cliente').then(response => {
+            setDadosCliente(response.data);
+        });
+    }, []);
     return (
         <Table>
-            <table id="customers" className="table mt-4">
+            <div id="meio">
+                <table className="table mt-4">
+                    <thead>
+                        <tr>
+                            <th className="thm">id</th>
+                            <th className="thm">Nome</th>
+                            <th className="thm">Bairro</th>
+                            <th className="thm">Cep</th>
+                            <th className="thm">Cidade</th>
+                            <th className="thm">UF</th>
+                            <th className="thm">CPF</th>
+                            <th className="thm">RG</th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        {dadosCliente
+                            .sort((a, b) => (a.id > b.id ? 1 : -1))
+                            .map(dados => (
+                                <tr id="trm" key={dados.id}>
+                                    <td className="tdm">{dados.id}</td>
+                                    <td className="tdm">{dados.nome}</td>
+                                    <td className="tdm">{dados.bairro}</td>
+                                    <td className="tdm">{dados.cep}</td>
+                                    <td className="tdm">{dados.cidade}</td>
+                                    <td className="tdm">{dados.uf}</td>
+                                    <td className="tdm">{dados.CPF}</td>
+                                    <td className="tdm">{dados.RG}</td>
+                                </tr>
+                            ))}
+                    </thead>
+                </table>
+            </div>
+        </Table>
+    );
+};
+export default Tables;
+/* <table id="customers" className="table mt-4">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -55,8 +106,4 @@ const Tables: React.FC<TableProps> = () => {
                         <td> </td>
                     </tr>
                 </thead>
-            </table>
-        </Table>
-    );
-};
-export default Tables;
+            </table> */

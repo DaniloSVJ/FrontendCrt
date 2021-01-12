@@ -1,0 +1,78 @@
+// import React, { TableHTMLAttributes } from 'react';
+// // import { Fi } from 'react-icons/fi';
+// // import { FiChevronRight } from 'react-icons/fi';
+// // import { Link } from 'react-router-dom';
+// import { Table } from './styles';
+
+// interface Produto {
+//     id: string;
+//     nome: string;
+//     quantidade: number;
+//     valor: number;
+// }
+// function tabela(dado: Produto): {
+//     // const { produto, setProduto } = useState('');
+
+//     return (
+//         <Table>
+//             <table id="customers" className="table mt-4">
+//                 <thead>
+//                     <tr>
+//                         <th>ID</th>
+//                         <th>Nome Produto</th>
+//                         <th>Qtd</th>
+//                         <th>Valor</th>
+//                         <th>Ações</th>
+//                     </tr>
+
+//                     <tr>
+//                         <td>{dado.id}</td>
+//                         <td>{dado.nome}</td>
+//                         <td>{dado.quantidade}</td>
+//                         <td>{dado.valor}</td>
+//                     </tr>
+//                 </thead>
+//             </table>
+//         </Table>
+//     );
+// }
+// export default Tables;
+// /* <table id="customers" className="table mt-4">
+//                 <thead>
+//                     <tr>
+//                         <th>ID</th>
+//                         <th>Nome Produto</th>
+//                         <th>Qtd</th>
+//                         <th>Valor</th>
+//                         <th>Ações</th>
+//                     </tr>
+//                     <tr>
+//                         <td>1</td>
+//                         <td>Arroz do Papaidfdfdfdfdfdfdffdfdfdfdf</td>
+//                         <td>1</td>
+//                         <td>3,00</td>
+//                         <td> </td>
+//                     </tr>
+//                     <tr>
+//                         <td>1</td>
+//                         <td>Arroz do Papaidfdfdfdfdfdfdffdfdfdfdf</td>
+//                         <td>1</td>
+//                         <td>3,00</td>
+//                         <td> </td>
+//                     </tr>
+//                     <tr>
+//                         <td>1</td>
+//                         <td>Arroz do Papaidfdfdfdfdfdfdffdfdfdfdf</td>
+//                         <td>1</td>
+//                         <td>3,00</td>
+//                         <td> </td>
+//                     </tr>
+//                     <tr>
+//                         <td>1</td>
+//                         <td>Arroz do Papaidfdfdfdfdfdfdffdfdfdfdf</td>
+//                         <td>1</td>
+//                         <td>3,00</td>
+//                         <td> </td>
+//                     </tr>
+//                 </thead>
+//             </table> */

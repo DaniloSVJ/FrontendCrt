@@ -12,44 +12,104 @@ export const Title = styled.h1`
     margin-top: 80px;
 `;
 
-export const Form = styled.div`
+export const GRADE = styled.div`
     //background-color: #e0ffff;
-    display: flex;
-    flex-direction: column;
-    .teste {
+    display: grid;
+
+    grid-template-areas:
+        'header header header header header header'
+        'menu main main main main main'
+        'menu footer footer footer footer footer';
+    .Header {
+        grid-area: header;
+    }
+    .Main {
+        grid-area: main;
+        background-color: #128ac6;
+    }
+    .Menu {
+        grid-area: menu;
+        margin-right: 20px;
+    }
+    .grid-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
     label {
-        position: s;
+        color: #fff;
+        font-style: bold;
+        font-size: 30px;
+        align-items: center;
+    }
+    h1 {
+        color: #fff;
+        font-style: bold;
+        font-size: 50px;
+        margin: 25px;
+        text-align: center;
+        align-items: center;
+        padding: 10;
     }
     input {
-        width: 100%;
+        width: 250px;
         background-color: #fff;
-        color: white;
+        color: #000;
+        padding: 14px 20px;
+        align-items: center;
+        justify-content: center;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+    button {
+        width: 250px;
+        background-color: #4caf50;
+        color: #000;
         padding: 14px 20px;
         margin: 8px 0;
         border: none;
         border-radius: 4px;
         cursor: pointer;
-        cursor: pointer;
-        &::placeholder {
-            color: #a8a8b3;
-        }
-    }
-
-    /* button {
-        width: 210px;
-        height: 70px;
-        background: #04d361;
-        border-radius: 0 5px 5px 0;
-        border: 0;
-        color: #fff;
-        font-weight: bold;
-        transition: 0.2s;
 
         &:hover {
-            background: ${shade(0.2, '#04d361')};
-        } */
-    // }
+            background-color: #45a049;
+        }
+    }
+    #customers {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    #customers td,
+    #customers th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #customers tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #customers tr:hover {
+        background-color: #ddd;
+    }
+
+    #customers th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #4caf50;
+        color: white;
+    }
+    #customers td {
+        background-color: #fff;
+    }
 `;
 
 // export const Error = styled.span`
