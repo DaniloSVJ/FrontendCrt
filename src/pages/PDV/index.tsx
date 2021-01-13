@@ -1,4 +1,4 @@
-import React, { FormEvent, useState, useEffect } from 'react';
+import React, { FormEvent, useState, useEffect, useRef } from 'react';
 import Tables from '../../components/Tables';
 import { Grid } from './styles';
 
@@ -14,6 +14,7 @@ interface Produto {
 }
 
 const PDV: React.FC = () => {
+    const iput = useRef<HTMLInputElement>();
     const [produto, setProduto] = useState<Produto>();
     const [rotaId, setRotaId] = useState('');
     const [idCli, setIdCli] = useState(1);
@@ -198,6 +199,7 @@ const PDV: React.FC = () => {
                         <div>
                             <h1 className="h1cabeçado">Cliente</h1>
                             <input
+                                value={idCli}
                                 className="inputcabeçalho"
                                 type="text"
                                 placeholder="1"
