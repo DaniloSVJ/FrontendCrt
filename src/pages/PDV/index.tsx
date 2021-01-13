@@ -31,6 +31,7 @@ const PDV: React.FC = () => {
     const [tamArray2, setTamArray2] = useState([]);
     const [nomesPro, setNomesPro] = useState([]);
     const [nome_produto, setNomep] = useState('');
+    const [fecharV, setFecharV] = useState(false);
     const [chamar, setChamar] = useState('');
     const [dadosCliente, setDadosCliente] = useState([
         {
@@ -54,11 +55,13 @@ const PDV: React.FC = () => {
     const [dadosVenda, setDadosVenda] = useState([
         {
             id: '',
+            id_venda: 2,
             ordem: 0,
             nome_produto: '',
             codigo_produto: '',
             qtdvendido: 0,
             valor_vendido: 0,
+            status: 2,
         },
     ]);
     const [subtoltalTela, setSubtoltalTela] = useState('');
@@ -87,12 +90,16 @@ const PDV: React.FC = () => {
     }, [KeyT]);
 
     useEffect(() => {
-        api.delete('itemvendaAcessoria');
+        api.get('itemvenda').then(response => {
+            console.log(response.data);
+        });
     }, []);
-    const [id_vendas, setId_vendas] = useState('');
-    const [ordem, setOrdem] = useState('');
+    const [id_vendas, setId_vendas] = useState(0);
+    const [ordem, setOrdem] = useState(0);
     const [id_cliente, setId_cliente] = useState(0);
     const [funcionario, setFuncionario] = useState('');
+    let idv;
+    let ido;
 
     useEffect(() => {
         let vord = 0;
@@ -100,19 +107,13 @@ const PDV: React.FC = () => {
             let nameP = '';
             let idProd = '';
             let codProd = '';
-            if (id_vendas === '') {
-                setId_vendas('0');
-            }
-            if (ordem === '') {
-                setOrdem('0');
-            }
 
             if (produto) {
                 nameP = produto.nome ? produto.nome : '';
                 idProd = produto.id;
                 codProd = produto.codigo;
             }
-            await api.get('itemvendaAcessoria').then(response => {
+            await api.get('itemvenda').then(response => {
                 setDadosVenda(response.data);
             });
 
@@ -126,37 +127,43 @@ const PDV: React.FC = () => {
 
                 if (ifyouhave !== rotaId) {
                     if (tam === 0) {
-                        setOrdem('1');
+                        setOrdem(1);
+                        console.log(`>>:${id_vendas}`);
+                        console.log(`>>o:${ordem}`);
+                        console.log('if1');
                     } else if (tam > 0) {
                         vord = tam + 1;
-                        setOrdem(vord.toString());
+                        console.log('else');
+                        setOrdem(vord);
                     }
+                    idv = id_vendas;
+                    ido = ordem;
 
-                    await api.post('itemvendaAcessoria', {
-                        id_vendas: Number(id_vendas),
-                        ordem: Number(ordem),
+                    await api.post('itemvenda', {
+                        id_vendas: 2,
+                        ordem,
                         id_produtos: idProd,
                         qtdvendido,
                         valor_vendido,
                         nome_produto: nameP,
                         codigo_produto: codProd,
+                        status: 2,
                     });
                 } else if (ifyouhave === rotaId) {
-                    await api.put(`itemvendaAcessoria/${iditem}`, {
+                    await api.put(`itemvenda/${iditem}`, {
                         id: iditem,
                         qtdvendido,
                         valor_vendido,
                     });
                 }
             }
-            await api.get('itemvendaAcessoria').then(response => {
-                setDadosVenda(response.data);
+            await api.get('itemvenda').then(response => {
+                // setDadosVenda(response.data);
             });
-            await api
-                .get(`itemvendaAcessoria/soma/${id_vendas}`)
-                .then(response => {
-                    setTotal(response.data);
-                });
+
+            await api.get(`itemvenda/soma/${id_vendas}`).then(response => {
+                setTotal(response.data);
+            });
         }
 
         handleAddRepository3();
@@ -191,17 +198,19 @@ const PDV: React.FC = () => {
         console.log(nome_produto);
     }, [nome_produto]);
 
-    const fecharVenda = useCallback(() => {
+    useEffect(() => {
         async function CriarVenda(): Promise<void> {
-            await setId_cliente(1);
-            await setFuncionario('Fernando');
-            await api.post('venda', {
-                id_cliente,
-                funcionario,
-            });
+            if (fecharV === true) {
+                await setId_cliente(1);
+                await setFuncionario('Fernando');
+                await api.post('venda', {
+                    id_cliente,
+                    funcionario,
+                });
+            }
         }
         CriarVenda();
-    }, []);
+    }, [fecharV]);
 
     return (
         <>
@@ -216,7 +225,7 @@ const PDV: React.FC = () => {
                         <div id="bFecharVenda">
                             <div id="btnFechar">
                                 <a
-                                    onClick={e => fecharVenda}
+                                    onClick={e => setFecharV(true)}
                                     href={`/formapagamento/?${id_vendas}`}
                                 >
                                     Fechar Venda
@@ -292,7 +301,7 @@ const PDV: React.FC = () => {
                             </tr>
 
                             {dadosVenda
-                                .sort((a, b) => (a.ordem > b.ordem ? 1 : -1))
+                                // .sort((a, b) => (a.ordem > b.ordem ? 1 : -1))
                                 .map(dados => (
                                     <tr
                                         key={dados.ordem}
