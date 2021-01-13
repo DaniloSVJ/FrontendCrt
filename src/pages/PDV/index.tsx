@@ -1,13 +1,8 @@
-import React, { FormEvent, useState, useEffect, useCallback } from 'react';
-import { Link, useParams, useHistory } from 'react-router-dom';
+import React, { FormEvent, useState, useEffect } from 'react';
 import Tables from '../../components/Tables';
 import { Grid } from './styles';
 
 import api from '../../services/api';
-
-interface RepositoriesForms {
-    repository: string;
-}
 
 interface Produto {
     id: string;
@@ -18,19 +13,14 @@ interface Produto {
     id_grupo: string;
 }
 
-interface idVenda {
-    id: string;
-}
-
 const PDV: React.FC = () => {
-    const history = useHistory();
     const [produto, setProduto] = useState<Produto>();
     const [rotaId, setRotaId] = useState('');
-    const [codigo, setCodigo] = useState('');
-    const [tamArray, setTamArray] = useState([]);
-    const [tamArray2, setTamArray2] = useState([]);
-    const [nomesPro, setNomesPro] = useState([]);
-    const [nome_produto, setNomep] = useState('');
+    const [idCli, setIdCli] = useState(1);
+
+    useEffect(() => {
+        console.log(idCli);
+    }, [idCli]);
     const [fecharV, setFecharV] = useState(false);
     const [chamar, setChamar] = useState('');
     const [dadosCliente, setDadosCliente] = useState([
@@ -71,38 +61,19 @@ const PDV: React.FC = () => {
     const [KeyQuantidade, setKeyQuantidade] = useState('');
     const [valor_vendido, setvalor_vendido] = useState(0);
     const [qtdvendido, setqtdvendido] = useState(0);
-    const [staValue, setStaValue] = useState(false);
-    const [looksize, setLooksize] = useState([]);
-    const [codigo_produto, setCodigo_produto] = useState('');
+
     async function handleAddRepository(
         event: FormEvent<HTMLFormElement>,
     ): Promise<void> {
         event.preventDefault();
     }
-    useEffect(() => {
-        async function handleAddRepositorydd(
-            event: FormEvent<HTMLFormElement>,
-        ): Promise<void> {
-            if (KeyT === 'F3') {
-                event.preventDefault();
-            }
-        }
-    }, [KeyT]);
 
-    useEffect(() => {
-        api.get('itemvenda').then(response => {
-            console.log(response.data);
-        });
-    }, []);
-    const [id_vendas, setId_vendas] = useState(0);
-    const [ordem, setOrdem] = useState(0);
+    const id_vendas = 0;
+    let ordem = 0;
     const [id_cliente, setId_cliente] = useState(0);
     const [funcionario, setFuncionario] = useState('');
-    let idv;
-    let ido;
 
     useEffect(() => {
-        let vord = 0;
         async function handleAddRepository3(): Promise<void> {
             let nameP = '';
             let idProd = '';
@@ -127,20 +98,13 @@ const PDV: React.FC = () => {
 
                 if (ifyouhave !== rotaId) {
                     if (tam === 0) {
-                        setOrdem(1);
-                        console.log(`>>:${id_vendas}`);
-                        console.log(`>>o:${ordem}`);
-                        console.log('if1');
+                        ordem = 1;
                     } else if (tam > 0) {
-                        vord = tam + 1;
-                        console.log('else');
-                        setOrdem(vord);
+                        ordem = tam + 1;
                     }
-                    idv = id_vendas;
-                    ido = ordem;
 
                     await api.post('itemvenda', {
-                        id_vendas: 2,
+                        id_vendas,
                         ordem,
                         id_produtos: idProd,
                         qtdvendido,
@@ -158,7 +122,7 @@ const PDV: React.FC = () => {
                 }
             }
             await api.get('itemvenda').then(response => {
-                // setDadosVenda(response.data);
+                setDadosVenda(response.data);
             });
 
             await api.get(`itemvenda/soma/${id_vendas}`).then(response => {
@@ -194,9 +158,6 @@ const PDV: React.FC = () => {
             }
         }
     }, [qtdvendido]);
-    useEffect(() => {
-        console.log(nome_produto);
-    }, [nome_produto]);
 
     useEffect(() => {
         async function CriarVenda(): Promise<void> {
@@ -236,7 +197,11 @@ const PDV: React.FC = () => {
                     <div id="dadosIniciais">
                         <div>
                             <h1 className="h1cabeçado">Cliente</h1>
-                            <input className="inputcabeçalho" type="text" />
+                            <input
+                                className="inputcabeçalho"
+                                type="text"
+                                placeholder="1"
+                            />
                         </div>
                         <div id="h1doinput">
                             <h1 className="h1dadosInput">Cliente</h1>
@@ -301,7 +266,7 @@ const PDV: React.FC = () => {
                             </tr>
 
                             {dadosVenda
-                                // .sort((a, b) => (a.ordem > b.ordem ? 1 : -1))
+                                .sort((a, b) => (a.ordem > b.ordem ? 1 : -1))
                                 .map(dados => (
                                     <tr
                                         key={dados.ordem}
@@ -334,7 +299,60 @@ const PDV: React.FC = () => {
                         <a href="/" onClick={e => setChamar('')}>
                             Fechar
                         </a>
-                        <div id="divmodal" />
+                        <div id="divmodal">
+                            <table className="tableModalCli">
+                                <thead>
+                                    <tr>
+                                        <th className="thm">id</th>
+                                        <th className="thm">Nome</th>
+                                        <th className="thm">Bairro</th>
+                                        <th className="thm">Cep</th>
+                                        <th className="thm">Cidade</th>
+                                        <th className="thm">UF</th>
+                                        <th className="thm">CPF</th>
+                                        <th className="thm">RG</th>
+                                    </tr>
+                                </thead>
+                                <thead>
+                                    {dadosCliente
+                                        .sort((a, b) => (a.id > b.id ? 1 : -1))
+                                        .map(dados => (
+                                            <tr
+                                                id="trm"
+                                                key={dados.id}
+                                                onClick={e =>
+                                                    setIdCli(Number(dados.id))
+                                                }
+                                            >
+                                                <td className="tdm">
+                                                    {dados.id}
+                                                </td>
+                                                <td className="tdm">
+                                                    {dados.nome}
+                                                </td>
+                                                <td className="tdm">
+                                                    {dados.bairro}
+                                                </td>
+                                                <td className="tdm">
+                                                    {dados.cep}
+                                                </td>
+                                                <td className="tdm">
+                                                    {dados.cidade}
+                                                </td>
+                                                <td className="tdm">
+                                                    {dados.uf}
+                                                </td>
+                                                <td className="tdm">
+                                                    {dados.CPF}
+                                                </td>
+                                                <td className="tdm">
+                                                    {dados.RG}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </Grid>

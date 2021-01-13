@@ -1,16 +1,10 @@
-import React, { TableHTMLAttributes, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { Fi } from 'react-icons/fi';
 // import { FiChevronRight } from 'react-icons/fi';
 // import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import { Table } from './styles';
 
-interface Produto {
-    id: string;
-    nome: string;
-    quantidade: number;
-    valor: number;
-}
 const Tables: React.FC = () => {
     const [dadosCliente, setDadosCliente] = useState([
         {

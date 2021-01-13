@@ -18,9 +18,6 @@ export const Grid = styled.div`
     //margin-color: #128ac6;
     display: grid;
 
-    tr:hover {
-        background-color: #3390ff;
-    }
     a {
         color: #fff;
     }
@@ -62,6 +59,9 @@ export const Grid = styled.div`
     .inputcabeçalho {
         font-size: 13px;
         color: #000;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        text-align: center;
         height: 20px;
         width: 70px;
     }
@@ -278,6 +278,44 @@ export const Grid = styled.div`
     .box2 {
         height: 500px;
         background-color: #fff;
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 7px;
+        /* display: table; */
+    }
+    .tableModalCli th {
+        background-color: #c0c0c0;
+        color: #000;
+        border-bottom: 1px dotted #000;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+    }
+
+    .tableModalCli th,
+    .tableModalCli td {
+        border: 1px solid #ddd;
+        padding: 2px;
+        height: 12px;
+        vertical-align: bottom;
+    }
+    /* .tableModalCli tr:nth-child(even) {
+        background-color: #f2f2f2;
+    } */
+
+    .tableModalCli td {
+        color: #000;
+    }
+    tr:hover {
+        color: #fff;
+        background-color: #3390ff;
+        cursor: pointer;
+
+        & td {
+            color: #fff;
+        }
     }
 `;
 
