@@ -1,4 +1,10 @@
-import React, { FormEvent, useState, useEffect, useRef } from 'react';
+import React, {
+    FormEvent,
+    useState,
+    useEffect,
+    useRef,
+    useCallback,
+} from 'react';
 import Tables from '../../components/Tables';
 import { Grid } from './styles';
 
@@ -15,17 +21,18 @@ interface Produto {
 
 const PDV: React.FC = () => {
     const iput = useRef<HTMLInputElement>();
+    const trRef = useRef<HTMLTableElement>();
     const [produto, setProduto] = useState<Produto>();
     const [rotaId, setRotaId] = useState('');
     const [idCli, setIdCli] = useState(1);
 
-    useEffect(() => {
-        console.log(idCli);
-    }, [idCli]);
+    const [isAticvado, setIsAtivado] = useState(false);
+
     const [fecharV, setFecharV] = useState(false);
     const [chamar, setChamar] = useState('');
     const [dadosCliente, setDadosCliente] = useState([
         {
+            isAtivado: false,
             id: '',
             nome: '',
             bairro: '',
@@ -37,6 +44,21 @@ const PDV: React.FC = () => {
             RG: '',
         },
     ]);
+    const [dadosClit, setdadosClit] = useState([
+        {
+            isAtivado: false,
+            id: '',
+            nome: '',
+            bairro: '',
+            cep: '',
+            cidade: '',
+            uf: '',
+            telefone: '',
+            CPF: '',
+            RG: '',
+        },
+    ]);
+
     useEffect(() => {
         api.get('cliente').then(response => {
             setDadosCliente(response.data);
@@ -143,6 +165,15 @@ const PDV: React.FC = () => {
 
         handleAddRepository2();
     }, [rotaId, KeyT]);
+    useEffect(() => {
+        async function handleAddRepository2(): Promise<void> {
+            await api.get(`produto/${rotaId}`).then(response => {
+                setProduto(response.data);
+            });
+        }
+
+        handleAddRepository2();
+    }, [rotaId, KeyT]);
 
     useEffect(() => {
         if (produto) {
@@ -173,7 +204,25 @@ const PDV: React.FC = () => {
         }
         CriarVenda();
     }, [fecharV]);
+    const [val, setVal] = useState(false);
+    useEffect(() => {
+        const updateddadoscliente = [
+            dadosCliente.map(d =>
+                d.id === idCli.toString()
+                    ? { isAtivado: true }
+                    : { isAtivado: false },
+            ),
+        ];
+        console.log('Chamou a função');
+        setDadosCliente([{ updateddadoscliente }]);
+    }, [idCli]);
 
+    useEffect(() => {
+        console.log(idCli);
+
+        console.log(dadosCliente);
+    }, [idCli]);
+    const [isteste, setisteste] = useState(false);
     return (
         <>
             <Grid onKeyDown={e => setKeyT(e.key)}>
@@ -301,6 +350,8 @@ const PDV: React.FC = () => {
                         <a href="/" onClick={e => setChamar('')}>
                             Fechar
                         </a>
+                        <h1 id="h1ClienteModal">Cliente</h1>
+
                         <div id="divmodal">
                             <table className="tableModalCli">
                                 <thead>
@@ -313,6 +364,7 @@ const PDV: React.FC = () => {
                                         <th className="thm">UF</th>
                                         <th className="thm">CPF</th>
                                         <th className="thm">RG</th>
+                                        <th className="thm">RG</th>
                                     </tr>
                                 </thead>
                                 <thead>
@@ -320,11 +372,21 @@ const PDV: React.FC = () => {
                                         .sort((a, b) => (a.id > b.id ? 1 : -1))
                                         .map(dados => (
                                             <tr
+                                                className={
+                                                    dados.isAtivado
+                                                        ? 'activedados'
+                                                        : 'item'
+                                                }
                                                 id="trm"
                                                 key={dados.id}
-                                                onClick={e =>
-                                                    setIdCli(Number(dados.id))
-                                                }
+                                                onClick={e => [
+                                                    [
+                                                        setIdCli(
+                                                            Number(dados.id),
+                                                        ),
+                                                        setIsAtivado(true),
+                                                    ],
+                                                ]}
                                             >
                                                 <td className="tdm">
                                                     {dados.id}
@@ -349,6 +411,9 @@ const PDV: React.FC = () => {
                                                 </td>
                                                 <td className="tdm">
                                                     {dados.RG}
+                                                </td>
+                                                <td className="tdm">
+                                                    {dados.isAtivado}
                                                 </td>
                                             </tr>
                                         ))}

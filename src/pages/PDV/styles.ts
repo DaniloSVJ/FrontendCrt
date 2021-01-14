@@ -1,9 +1,6 @@
 import styled, { css } from 'styled-components';
 import { shade } from 'polished';
 
-interface FormProps {
-    hasError: Boolean;
-}
 // flex-container
 export const Title = styled.h1`
     font-size: 48px;
@@ -12,7 +9,9 @@ export const Title = styled.h1`
     line-height: 56px;
     margin-top: 80px;
 `;
-
+// interface FormProps {
+//     isteste: Boolean;
+// }
 export const Grid = styled.div`
     background-color: #128ac6;
     //margin-color: #128ac6;
@@ -238,7 +237,7 @@ export const Grid = styled.div`
         width: 100%;
         height: 100%;
         top: 10px;
-        left: 0;
+        left: 20px;
         position: fixed;
         display: none;
     }
@@ -266,7 +265,11 @@ export const Grid = styled.div`
         margin: 20px;
         background-color: #fff;
     }
-
+    #h1ClienteModal {
+        margin-left: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+    }
     .box {
         weight: 500px;
         height: 500px;
@@ -316,6 +319,18 @@ export const Grid = styled.div`
         & td {
             color: #fff;
         }
+    }
+    .activedados {
+        background-color: #000;
+    }
+    .item {
+        background-color: #fff;
+    }
+    .activedados {
+        background-color: #000;
+    }
+    .item {
+        background-color: #fff;
     }
 `;
 
