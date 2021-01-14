@@ -33,15 +33,27 @@ const PDV: React.FC = () => {
     const [dadosCliente, setDadosCliente] = useState([
         {
             isAtivado: false,
-            id: '',
-            nome: '',
-            bairro: '',
-            cep: '',
-            cidade: '',
-            uf: '',
-            telefone: '',
-            CPF: '',
-            RG: '',
+            id: '1',
+            nome: 'Danilo',
+            bairro: 'BBBBBB',
+            cep: '2111111',
+            cidade: 'For',
+            uf: 'Ce',
+            telefone: '4545454',
+            CPF: '56565656956',
+            RG: '5454545',
+        },
+        {
+            isAtivado: false,
+            id: '2',
+            nome: 'Tamirez',
+            bairro: 'BBBBBB',
+            cep: '2111111',
+            cidade: 'For',
+            uf: 'Ce',
+            telefone: '4545454',
+            CPF: '56565656956',
+            RG: '5454545',
         },
     ]);
     const [dadosClit, setdadosClit] = useState([
@@ -61,7 +73,7 @@ const PDV: React.FC = () => {
 
     useEffect(() => {
         api.get('cliente').then(response => {
-            setDadosCliente(response.data);
+            //   setDadosCliente(response.data);
         });
     }, []);
 
@@ -206,15 +218,13 @@ const PDV: React.FC = () => {
     }, [fecharV]);
     const [val, setVal] = useState(false);
     useEffect(() => {
-        const updateddadoscliente = [
-            dadosCliente.map(d =>
-                d.id === idCli.toString()
-                    ? { isAtivado: true }
-                    : { isAtivado: false },
-            ),
-        ];
+        const updateddadoscliente = dadosCliente.map(d =>
+            d.id === idCli.toString()
+                ? { ...d, isAtivado: true }
+                : { ...d, isAtivado: false },
+        );
         console.log('Chamou a função');
-        setDadosCliente([{ updateddadoscliente }]);
+        setDadosCliente(updateddadoscliente);
     }, [idCli]);
 
     useEffect(() => {
@@ -227,15 +237,11 @@ const PDV: React.FC = () => {
         <>
             <Grid onKeyDown={e => setKeyT(e.key)}>
                 <div className="Header">
-                    <nav id="a1">
-                        <div>
-                            <a href="#bg" onKeyUp={e => setChamar('chamar')}>
-                                Lista de Clientes
-                            </a>
-                        </div>
+                    <div id="a1">
                         <div id="bFecharVenda">
                             <div id="btnFechar">
                                 <a
+                                    id="fecharVenda"
                                     onClick={e => setFecharV(true)}
                                     href={`/formapagamento/?${id_vendas}`}
                                 >
@@ -243,10 +249,12 @@ const PDV: React.FC = () => {
                                 </a>
                             </div>
                         </div>
-                    </nav>
+                    </div>
                     <div id="dadosIniciais">
                         <div>
-                            <h1 className="h1cabeçado">Cliente</h1>
+                            <a href="#bg" onKeyUp={e => setChamar('chamar')}>
+                                Cliente
+                            </a>
                             <input
                                 value={idCli}
                                 className="inputcabeçalho"

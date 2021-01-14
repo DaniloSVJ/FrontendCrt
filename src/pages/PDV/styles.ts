@@ -15,10 +15,14 @@ export const Title = styled.h1`
 export const Grid = styled.div`
     background-color: #128ac6;
     //margin-color: #128ac6;
+    .Header #a1 a {
+        text-align: none;
+    }
     display: grid;
 
     a {
         color: #fff;
+        text-align: none;
     }
 
     height: 100%;
@@ -38,6 +42,14 @@ export const Grid = styled.div`
         flex-direction: row;
         align-items: flex-end;
     }
+    #dadosIniciais a {
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 20px;
+        &:hover {
+            color: yellow;
+        }
+    }
     .Header #a1 {
         width: 100%;
         display: flex;
@@ -47,10 +59,20 @@ export const Grid = styled.div`
     .Header #a1 div {
         margin: 7px;
     }
-    .Header #a1 #bFecharVenda #btnFechar {
+    .Header #a1 {
         align-items: flex-start;
         justify-content: flex-end;
     }
+    #btnFechar {
+        border: 1px solid #98fb98;
+        padding: 20px;
+        border-radius: 4px;
+        color: #128ac6;
+        &:hover {
+            background-color: #98fb98;
+        }
+    }
+
     .h1cabeçado {
         font-size: 20px;
         color: #fff;
