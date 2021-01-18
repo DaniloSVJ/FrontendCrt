@@ -121,21 +121,22 @@ const FormaPagamento: React.FC = () => {
 
     const [valop, setfora] = useState('');
     const valores = [0];
+    const [textoselect, settextosel] = useState('');
     const [totalArray, setTotalArray] = useState(0);
     async function incluir(): Promise<void> {
         async function handleselect(): Promise<void> {
             const verinputref = totalagora.toString(); // inputRef.current?.value;
             const valRes = valRestante.toString(); /// inputRefVR.current?.value;
             const selref = selectRef.current?.value || 1;
-            let textoSel = '';
+            const textoSel = '';
 
             await api.get(`formapagamento/${formaPId}`).then(res => {
-                textoSel = res.data;
+                settextosel(res.data);
             });
             const selrefNome = formText;
             const Vr = Number(valRes);
             console.log(textoSel);
-
+            console.log(`total reduz ${[valores]}`);
             if (Vr > 0) {
                 if (Number(verinputref) > 0) {
                     const vVal = valores.includes(0);
@@ -158,7 +159,7 @@ const FormaPagamento: React.FC = () => {
                         id_venda: 0,
                         valor: verinputref,
                         ordem: selref,
-                        formapagamento: textoSel,
+                        formapagamento: textoselect,
                         status: false,
                     });
 
@@ -196,15 +197,19 @@ const FormaPagamento: React.FC = () => {
 
     async function excluir(): Promise<void> {
         async function handleselect(): Promise<void> {
-            const pegaindex = valores.splice(idlinha, 1);
+            const linha = formPagamento.findIndex(o => o.id === idlinha);
 
-            const totalReduzido = valores.reduce(function (
+            const pegaindex = valores.splice(linha, 1);
+            console.log(`valor da linha: ${idlinha}`);
+            console.log(`valor da linha: ${linha}`);
+            const totalReduzido = pegaindex.reduce(function (
                 acumulador,
                 valorAtual,
             ) {
                 return acumulador + valorAtual;
             },
             0);
+            console.log(`total reduz ${valores}`);
             setValRestante(Number(vlrIncial) - Number(totalReduzido));
             await api.delete(`formapagamentovenda/${idlinha}`);
             await api.get('formapagamentovenda').then(res => {
@@ -235,7 +240,7 @@ const FormaPagamento: React.FC = () => {
         await api.get('ultimavenda').then(res => {
             idVendaCriado = res.data;
         });
-        console.log(idVendaCriado);
+
         const id_venda = Number(idVendaCriado);
         const status = true;
         await api.put(`formapagamentovendaDel/${0}`, {
