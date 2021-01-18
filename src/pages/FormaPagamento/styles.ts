@@ -8,8 +8,10 @@ export const Title = styled.h1`
     line-height: 56px;
     margin-top: 80px;
 `;
-
-export const Form = styled.div`
+interface displayNoneFlex {
+    isClick: boolean;
+}
+export const Form = styled.div<displayNoneFlex>`
     color: #fff;
     border: 1px #fff;
     border-radius: 4px;
@@ -17,6 +19,11 @@ export const Form = styled.div`
         background-color: #128ac6;
         height: 100%;
         margin: 0;
+    }
+    #ValorRestante {
+        text-align: right;
+        padding-right: 4px;
+        background-color: #c7c7c7;
     }
     height: 500px;
     display: flex;
@@ -140,8 +147,11 @@ export const Form = styled.div`
     .tdh:hover {
         background-color: #3390ff;
     }
+    #idVRI {
+        display: none;
+    }
 
-    #idVR {
+    .idVR {
         color: #000;
         margin-bottom: 4px;
         border: 1px solid #c0c0c0;
@@ -155,6 +165,16 @@ export const Form = styled.div`
         border: 1px solid #c0c0c0;
         height: 20px;
         align-items: right;
+    }
+    #idCInp {
+        background-color: #fff;
+        color: #000;
+        margin-bottom: 4px;
+        border: 1px solid #c0c0c0;
+        height: 20px;
+
+        text-align: right;
+        display: flex;
     }
     #lbs_cabeçalho {
         align-items: left;
@@ -172,21 +192,21 @@ export const Form = styled.div`
         text-align: left;
         padding-left: 2px;
     }
+    .idcodInp {
+        text-align: right;
+        padding-left: 2px;
+    }
     input {
         text-align: right;
         width: 100px;
         padding: 4px;
     }
 
-    input[type='number']::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
     .Valor {
         text-align: right;
         width: 100px;
     }
-    .ValorRestante {
+    .id {
         text-align: right;
         padding-right: 4px;
         background-color: #c7c7c7;
@@ -199,4 +219,38 @@ export const Form = styled.div`
             background-color: #3390ff;
         }
     }
+    #final {
+        display: flex;
+        flex-direction: row;
+    }
+    #btnInEx {
+        width: 500px;
+    }
+    #final #troco {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+    #final #troco #hb {
+        margin-left: 100px;
+        font-size: 20px;
+    }
+    #final #troco #hb2 {
+        margin-left: 5px;
+        margin-right: 5px;
+        color: #fff;
+        width: 100%;
+        font-size: 20px;
+    }
+
+    ${props =>
+        props.isClick &&
+        css`
+            #idVRI {
+                display: flex;
+            }
+            #idCInp {
+                display: none;
+            }
+        `}
 `;

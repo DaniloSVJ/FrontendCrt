@@ -12,7 +12,7 @@ export default createGlobalStyle`
   body {
    background-color:#128AC6;
   }
-  body, input, button {
+  body,  button {
     font: 16px Roboto, sans-serif;
   }
 

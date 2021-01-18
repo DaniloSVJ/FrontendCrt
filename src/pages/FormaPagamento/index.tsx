@@ -1,3 +1,4 @@
+import { render } from '@testing-library/react';
 import React, {
     FormEvent,
     useState,
@@ -6,6 +7,7 @@ import React, {
     useRef,
     TableHTMLAttributes,
     SelectHTMLAttributes,
+    useImperativeHandle,
 } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
@@ -14,83 +16,250 @@ import api from '../../services/api';
 import { Form } from './styles';
 
 const FormaPagamento: React.FC = () => {
-    const selectedRef = useRef<HTMLSelectElement>(null);
     const location = useLocation();
-
+    const [troco, setTroco] = useState(0);
+    const [idlinha, setIdLinha] = useState(0);
+    const [vlrIncial, setVlrIncial] = useState(0);
     const idVenda = location.search.replace('?', '');
-
+    const [forma, setForma] = useState('');
     const [idVendat, setIdVenda] = useState([{ idv: '' }]);
-
+    // let total1;
+    const [totalagora, setTotalAgora] = useState(0);
+    const [valRestante, setValRestante] = useState(0);
+    const [verInput, setVerInput] = useState(0);
     const [formaPNome, setFormaPNome] = useState('');
-    const [formaPNomed, setFormaPNomed] = useState([]);
+    const [formaPNomed, setFormaPNomed] = useState('[]');
     const [isSelected, setIsSelected] = useState(false);
     const [valorInput, setValorInput] = useState(0);
-    const tableTrTd = useRef<HTMLTableElement>(null);
+
     const inputRef = useRef<HTMLInputElement>(null);
     const selectRef = useRef<HTMLSelectElement>(null);
+    const inputRefVR = useRef<HTMLInputElement>(null);
     const [formaPId, setFormaPId] = useState(1);
     const [totaVenda, setTotaVenda] = useState(0);
+
+    // window.addEventListener('load', carrega);
+    const carrega = useCallback(() => {
+        async function handleAddRepo(): Promise<void> {
+            // await api.get(`itemvenda/soma/${idVenda}`).then(response => {});
+        }
+        handleAddRepo();
+    }, []);
+    const [tes, settes] = useState([
+        {
+            id: 1,
+            nome: 'Daniel',
+        },
+        {
+            id: 2,
+            nome: 'Danielle',
+        },
+        {
+            id: 3,
+            nome: 'Denise',
+        },
+    ]);
 
     const [options, setOption] = useState([
         {
             id: 0,
-            nome: '',
+            nome: 'teste',
         },
     ]);
     const [dadosformPagamento, setDadosformPagamento] = useState('');
     const [formPagamento, setFormPagamento] = useState([
         {
-            id: '',
-            forma: '',
-            valor: '',
+            id: 0,
+            id_forma_pagmet: 0,
+            ordem: 0,
+            formapagamento: '',
+            valor: 0,
         },
     ]);
-    let verInput;
-    let verSelect;
-    // const valueSelect =
-    //     options.find(d => d.id === Number(formaPId))?.nome || '';
-    // setDadosformPagamento(valueSelect || '');
+    const [isClick, setIsclick] = useState(false);
 
+    // const clickInH1 = useCallback(()=>{
+    //     setIsclick(false)
+
+    // })
+    async function handleAddRepository(
+        event: FormEvent<HTMLFormElement>,
+    ): Promise<void> {
+        event.preventDefault();
+    }
+    async function totalIncial(): Promise<void> {
+        let valorSoma;
+        await api.get(`itemvenda/soma/${idVenda}`).then(response => {
+            valorSoma = response.data;
+        });
+        return valorSoma;
+    }
+
+    window.onload = function () {
+        //   alert('Está carregado!');
+    };
+    const vinical = totalIncial();
+    const [formText, setFormText] = useState('');
+    const total = vinical;
+    // console.log(total);
+    const [tesTotal, setTes] = useState('');
+    // const [total, setTotal] = useState('vinical');
     useEffect(() => {
         async function handleAddRepository3(): Promise<void> {
             await api.get('formapagamento').then(response => {
                 setOption(response.data);
             });
             await api.get(`itemvenda/soma/${idVenda}`).then(response => {
-                setTotaVenda(response.data);
+                setValRestante(response.data);
+                setTotalAgora(response.data);
+                setVlrIncial(response.data);
             });
+            await api.delete(`formapagamentovendaDel/${0}`);
         }
         handleAddRepository3();
     }, []);
 
-    useEffect(() => {
+    const [valop, setfora] = useState('');
+    const valores = [0];
+    const [totalArray, setTotalArray] = useState(0);
+    async function incluir(): Promise<void> {
         async function handleselect(): Promise<void> {
-            verInput = inputRef.current?.value ? inputRef.current?.value : '';
-            const forma = options.find(o => o.id === Number(formaPId))?.nome;
-            if (verInput === '') {
-                await setFormPagamento([
-                    {
-                        id: formaPId.toString(),
-                        forma: forma || '',
-                        valor: valorInput.toString(),
+            const verinputref = totalagora.toString(); // inputRef.current?.value;
+            const valRes = valRestante.toString(); /// inputRefVR.current?.value;
+            const selref = selectRef.current?.value || 1;
+            let textoSel = '';
+
+            await api.get(`formapagamento/${formaPId}`).then(res => {
+                textoSel = res.data;
+            });
+            const selrefNome = formText;
+            const Vr = Number(valRes);
+            console.log(textoSel);
+
+            if (Vr > 0) {
+                if (Number(verinputref) > 0) {
+                    const vVal = valores.includes(0);
+                    if (vVal === true) {
+                        valores.shift();
+                        valores.push(Number(verinputref));
+                    } else {
+                        valores.push(Number(verinputref));
+                    }
+
+                    const totalvvv = valores.reduce(function (
+                        acumulador,
+                        valorAtual,
+                    ) {
+                        return acumulador + valorAtual;
                     },
-                ]);
-            } else {
-                await setFormPagamento([
-                    ...formPagamento,
-                    {
-                        id: formaPId.toString(),
-                        forma: dadosformPagamento,
-                        valor: valorInput.toString(),
-                    },
-                ]);
+                    0);
+                    await api.post('formapagamentovenda', {
+                        id_forma_pagmet: Number(selref),
+                        id_venda: 0,
+                        valor: verinputref,
+                        ordem: selref,
+                        formapagamento: textoSel,
+                        status: false,
+                    });
+
+                    if (Number(valRes) >= Number(totalvvv)) {
+                        setValRestante(Number(valRes) - Number(totalvvv));
+                        //
+                        setIsclick(false);
+                        setTotalAgora(Number(valRes) - Number(totalvvv));
+                        console.log(`Total valRes ${totalvvv}`);
+
+                        await api.get('formapagamentovenda').then(res => {
+                            setFormPagamento(res.data);
+                        });
+                    } else if (Number(valRes) < Number(totalvvv)) {
+                        setValRestante(0);
+                        await api.get('formapagamentovenda').then(res => {
+                            setFormPagamento(res.data);
+                        });
+                        const verSinal = Number(totalvvv) - Number(vlrIncial);
+                        if (Math.sign(verSinal) === -1) {
+                            setTroco(-1 * verSinal);
+                        } else {
+                            setTroco(verSinal);
+                        }
+                    }
+                } else if (Number(verinputref) === 0) {
+                    alert('O valor de pagamento não pode ser zero');
+                }
+            } else if (Number(valRestante) === 0) {
+                alert('O Valor Restante Encontra-se zerado');
             }
         }
         handleselect();
-    }, [isSelected]);
+    }
 
+    async function excluir(): Promise<void> {
+        async function handleselect(): Promise<void> {
+            const pegaindex = valores.splice(idlinha, 1);
+
+            const totalReduzido = valores.reduce(function (
+                acumulador,
+                valorAtual,
+            ) {
+                return acumulador + valorAtual;
+            },
+            0);
+            setValRestante(Number(vlrIncial) - Number(totalReduzido));
+            await api.delete(`formapagamentovenda/${idlinha}`);
+            await api.get('formapagamentovenda').then(res => {
+                setFormPagamento(res.data);
+            });
+            if (Number(valRestante) < Number(totalReduzido)) {
+                const verSinal = Number(totalReduzido) - Number(vlrIncial);
+                if (Math.sign(verSinal) === -1) {
+                    setTroco(-1 * verSinal);
+                } else {
+                    setTroco(verSinal);
+                }
+            }
+            if (Number(valRestante) === Number(vlrIncial)) {
+                setTroco(0);
+            }
+        }
+
+        handleselect();
+    }
+
+    async function finalizar(): Promise<void> {
+        await api.post('venda', {
+            id_cliente: 1,
+            funcionario: 'Danilo',
+        });
+        let idVendaCriado = 0;
+        await api.get('ultimavenda').then(res => {
+            idVendaCriado = res.data;
+        });
+        console.log(idVendaCriado);
+        const id_venda = Number(idVendaCriado);
+        const status = true;
+        await api.put(`formapagamentovendaDel/${0}`, {
+            id_venda,
+            status,
+        });
+
+        await api.put(`itemvendaVenda/${0}`, {
+            id_vendas: Number(idVendaCriado),
+            status: 1,
+        });
+
+        window.location.href = '/';
+    }
+
+    const voltarPdv = useCallback(() => {
+        window.location.href = '/';
+    }, []);
+    async function teste(): Promise<void> {
+        document.getElementById('teste');
+    }
     return (
-        <Form>
+        <Form isClick={isClick}>
+            <script />
             <div id="carroça">
                 <div id="caixa">
                     <form id="forma">
@@ -109,6 +278,7 @@ const FormaPagamento: React.FC = () => {
                                             Forma de Pagamento
                                         </h1>
                                         <select
+                                            ref={selectRef}
                                             onChange={e => [
                                                 setFormaPId(
                                                     Number(e.target.value),
@@ -142,12 +312,25 @@ const FormaPagamento: React.FC = () => {
                                             Valor
                                         </h1>
                                         <input
-                                            type="number"
-                                            onChange={e =>
-                                                setValorInput(
-                                                    Number(e.target.value),
+                                            id="idCInp"
+                                            className="idcodInp"
+                                            value={totalagora}
+                                            onClick={e => setIsclick(true)}
+                                        />
+
+                                        <input
+                                            onKeyDown={e => setIsclick(true)}
+                                            className="idVR"
+                                            id="idVRI"
+                                            type="text"
+                                            // onClick={e=>e.target.addEventListener("click", myFunction))}
+                                            defaultValue={valRestante}
+                                            onChange={({ target }) =>
+                                                setTotalAgora(
+                                                    Number(target.value),
                                                 )
                                             }
+                                            ref={inputRef}
                                         />
                                     </div>
                                     <div>
@@ -157,9 +340,11 @@ const FormaPagamento: React.FC = () => {
                                         >
                                             Vr. Restante
                                         </h1>
-                                        <h1 id="idVR" className="ValorRestante">
-                                            teste
-                                        </h1>
+                                        <input
+                                            className="idVR"
+                                            id="ValorRestante"
+                                            value={valRestante}
+                                        />
                                     </div>
                                 </div>
 
@@ -176,18 +361,23 @@ const FormaPagamento: React.FC = () => {
                                         <thead>
                                             {formPagamento
                                                 .sort((a, b) =>
-                                                    a.id > b.id ? 1 : -1,
+                                                    a.ordem > b.ordem ? 1 : -1,
                                                 )
                                                 .map(dados => (
                                                     <tr
+                                                        onClick={e =>
+                                                            setIdLinha(dados.id)
+                                                        }
                                                         className="tdh"
                                                         key={dados.id}
                                                     >
                                                         <td className="tdh">
-                                                            {dados.id}
+                                                            {dados.ordem}
                                                         </td>
                                                         <td className="tdh">
-                                                            {dados.forma}
+                                                            {'sem nada'
+                                                                ? ''
+                                                                : dados.formapagamento}
                                                         </td>
                                                         <td className="tdh">
                                                             {dados.valor}
@@ -198,31 +388,46 @@ const FormaPagamento: React.FC = () => {
                                     </table>
                                 </div>
                                 <div id="final">
-                                    <button
-                                        className="btm"
-                                        type="button"
-                                        onClick={e => setIsSelected(true)}
-                                    >
-                                        Incluir - F6
-                                    </button>
-                                    <button
-                                        id="btm2"
-                                        className="btm"
-                                        type="submit"
-                                    >
-                                        Excluir - F8
-                                    </button>
+                                    <div>
+                                        <button
+                                            className="btm"
+                                            type="button"
+                                            onClick={incluir}
+                                        >
+                                            Incluir
+                                        </button>
+                                        <button
+                                            id="btm2"
+                                            className="btm"
+                                            type="button"
+                                            onClick={excluir}
+                                        >
+                                            Excluir
+                                        </button>
+                                    </div>
+                                    <div id="troco">
+                                        <h1 id="hb">Troco</h1>
+                                        <h1 id="hb2">{troco}</h1>
+                                    </div>
                                 </div>
                             </div>
                             <div id="butoesfinais">
                                 <div>
-                                    <button className="btf" type="button">
-                                        Finalizar - F6
+                                    <button
+                                        className="btf"
+                                        type="button"
+                                        onClick={finalizar}
+                                    >
+                                        Finalizar
                                     </button>
                                 </div>
                                 <div>
-                                    <button className="btf" type="button">
-                                        Cancelar - F8
+                                    <button
+                                        className="btf"
+                                        type="button"
+                                        onClick={voltarPdv}
+                                    >
+                                        Cancelar
                                     </button>
                                 </div>
                             </div>
