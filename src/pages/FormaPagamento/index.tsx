@@ -26,16 +26,15 @@ const FormaPagamento: React.FC = () => {
     // let total1;
     const [totalagora, setTotalAgora] = useState(0);
     const [valRestante, setValRestante] = useState(0);
-    const [verInput, setVerInput] = useState(0);
-    const [formaPNome, setFormaPNome] = useState('');
-    const [formaPNomed, setFormaPNomed] = useState('[]');
+
     const [isSelected, setIsSelected] = useState(false);
     const [valorInput, setValorInput] = useState(0);
 
     const inputRef = useRef<HTMLInputElement>(null);
     const selectRef = useRef<HTMLSelectElement>(null);
     const inputRefVR = useRef<HTMLInputElement>(null);
-    const [formaPId, setFormaPId] = useState(1);
+    const [formaPId, setFormaPId] = useState(1); // PEGA O ID DA CAIXA DE COMBINAÇÃO
+    const [formaPNome, setFormaPNome] = useState(''); // PEGA O NOME QUE TÁ NA CAIXA DE COMBINAÇÃO
     const [totaVenda, setTotaVenda] = useState(0);
 
     // window.addEventListener('load', carrega);
@@ -45,43 +44,20 @@ const FormaPagamento: React.FC = () => {
         }
         handleAddRepo();
     }, []);
-    const [tes, settes] = useState([
-        {
-            id: 1,
-            nome: 'Daniel',
-        },
-        {
-            id: 2,
-            nome: 'Danielle',
-        },
-        {
-            id: 3,
-            nome: 'Denise',
-        },
-    ]);
+    // OPÇÕES DA FORMA DE PAGAMENTO /////////////////////////////////////////////
 
-    const [options, setOption] = useState([
+    const [options, setOption] = useState([{ id: 0, ordem: 0, nome: 'teste' }]);
+
+    const [tipopagam, setTipopagam] = useState([
         {
             id: 0,
-            nome: 'teste',
-        },
-    ]);
-    const [dadosformPagamento, setDadosformPagamento] = useState('');
-    const [formPagamento, setFormPagamento] = useState([
-        {
-            id: 0,
-            id_forma_pagmet: 0,
+            id_forma_pagamet: 2,
             ordem: 0,
             formapagamento: '',
             valor: 0,
         },
     ]);
     const [isClick, setIsclick] = useState(false);
-
-    // const clickInH1 = useCallback(()=>{
-    //     setIsclick(false)
-
-    // })
     async function handleAddRepository(
         event: FormEvent<HTMLFormElement>,
     ): Promise<void> {
@@ -95,15 +71,11 @@ const FormaPagamento: React.FC = () => {
         return valorSoma;
     }
 
-    window.onload = function () {
-        //   alert('Está carregado!');
-    };
     const vinical = totalIncial();
     const [formText, setFormText] = useState('');
     const total = vinical;
-    // console.log(total);
-    const [tesTotal, setTes] = useState('');
-    // const [total, setTotal] = useState('vinical');
+
+    // AQUI É O CARREGAMENTO INICIAL DA CAIXA DE COMBIANAÇÃO E TOTAL DA VENDA
     useEffect(() => {
         async function handleAddRepository3(): Promise<void> {
             await api.get('formapagamento').then(response => {
@@ -114,71 +86,80 @@ const FormaPagamento: React.FC = () => {
                 setTotalAgora(response.data);
                 setVlrIncial(response.data);
             });
+            await api.get(`formapagamento/1`).then(response => {
+                setFormaPNome(response.data);
+            });
+
             await api.delete(`formapagamentovendaDel/${0}`);
         }
         handleAddRepository3();
     }, []);
 
-    const [valop, setfora] = useState('');
-    const valores = [0];
-    const [textoselect, settextosel] = useState('');
-    const [totalArray, setTotalArray] = useState(0);
+    async function clickinput(): Promise<void> {
+        const valorAnt = inputRef.current?.value;
+        setTotalAgora(Number(valorAnt));
+    }
+    // ATUALIZAR O NOME DA FORMA DE PAGAMENTO///////////////////////////
+    async function clickselect(): Promise<void> {
+        const or = selectRef.current?.selectedIndex;
+
+        if (Number(or) !== 0) {
+            await api.get(`formapagamento/${or}`).then(response => {
+                setFormaPNome(response.data);
+            });
+        } else if (Number(or) === 0) {
+            await api.get(`formapagamento/1`).then(response => {
+                setFormaPNome(response.data);
+            });
+        }
+    }
+    /// /////////////////////////////////////////////////////////////////
+
+    // FUNÇÃO DO BOTÃO INCLUIR///////////////////////////////////////////////////////
+    let valores = 0;
     async function incluir(): Promise<void> {
+        const verId = options[formaPId - 1];
+        const selref = verId.id;
+
         async function handleselect(): Promise<void> {
             const verinputref = totalagora.toString(); // inputRef.current?.value;
             const valRes = valRestante.toString(); /// inputRefVR.current?.value;
-            const selref = selectRef.current?.value || 1;
-            const textoSel = '';
 
-            await api.get(`formapagamento/${formaPId}`).then(res => {
-                settextosel(res.data);
-            });
-            const selrefNome = formText;
             const Vr = Number(valRes);
-            console.log(textoSel);
-            console.log(`total reduz ${[valores]}`);
+
             if (Vr > 0) {
                 if (Number(verinputref) > 0) {
-                    const vVal = valores.includes(0);
-                    if (vVal === true) {
-                        valores.shift();
-                        valores.push(Number(verinputref));
-                    } else {
-                        valores.push(Number(verinputref));
-                    }
+                    const valtras = Number(verinputref);
+                    // console.log(`valor input${valtras}`);
+                    valores += valtras;
 
-                    const totalvvv = valores.reduce(function (
-                        acumulador,
-                        valorAtual,
-                    ) {
-                        return acumulador + valorAtual;
-                    },
-                    0);
+                    const tlt = valores;
+                    console.log(`valor do valores: ${valores}`);
                     await api.post('formapagamentovenda', {
                         id_forma_pagmet: Number(selref),
                         id_venda: 0,
                         valor: verinputref,
-                        ordem: selref,
-                        formapagamento: textoselect,
+                        ordem: formaPId,
+                        formapagamento: formaPNome,
                         status: false,
                     });
 
-                    if (Number(valRes) >= Number(totalvvv)) {
-                        setValRestante(Number(valRes) - Number(totalvvv));
-                        //
+                    if (Number(valRes) >= Number(tlt)) {
+                        setValRestante(Number(vlrIncial) - Number(tlt));
+
                         setIsclick(false);
-                        setTotalAgora(Number(valRes) - Number(totalvvv));
-                        console.log(`Total valRes ${totalvvv}`);
+                        setTotalAgora(Number(valRes) - Number(tlt));
 
                         await api.get('formapagamentovenda').then(res => {
-                            setFormPagamento(res.data);
+                            setTipopagam(res.data);
+                            // console.log(`direto${res.data}`);
                         });
-                    } else if (Number(valRes) < Number(totalvvv)) {
+                    } else if (Number(valRes) < Number(tlt)) {
                         setValRestante(0);
                         await api.get('formapagamentovenda').then(res => {
-                            setFormPagamento(res.data);
+                            setTipopagam(res.data);
                         });
-                        const verSinal = Number(totalvvv) - Number(vlrIncial);
+                        const verSinal = Number(tlt) - Number(vlrIncial);
                         if (Math.sign(verSinal) === -1) {
                             setTroco(-1 * verSinal);
                         } else {
@@ -194,37 +175,37 @@ const FormaPagamento: React.FC = () => {
         }
         handleselect();
     }
+    // =======================
 
     async function excluir(): Promise<void> {
         async function handleselect(): Promise<void> {
-            const linha = formPagamento.findIndex(o => o.id === idlinha);
+            if (idlinha !== 0) {
+                const linha = tipopagam.findIndex(o => o.id === idlinha);
+                const pegarDados = tipopagam[linha];
+                console.log(`ValorCar${pegarDados}`);
+                const pegouValor = Number(pegarDados.valor);
 
-            const pegaindex = valores.splice(linha, 1);
-            console.log(`valor da linha: ${idlinha}`);
-            console.log(`valor da linha: ${linha}`);
-            const totalReduzido = pegaindex.reduce(function (
-                acumulador,
-                valorAtual,
-            ) {
-                return acumulador + valorAtual;
-            },
-            0);
-            console.log(`total reduz ${valores}`);
-            setValRestante(Number(vlrIncial) - Number(totalReduzido));
-            await api.delete(`formapagamentovenda/${idlinha}`);
-            await api.get('formapagamentovenda').then(res => {
-                setFormPagamento(res.data);
-            });
-            if (Number(valRestante) < Number(totalReduzido)) {
-                const verSinal = Number(totalReduzido) - Number(vlrIncial);
-                if (Math.sign(verSinal) === -1) {
-                    setTroco(-1 * verSinal);
-                } else {
-                    setTroco(verSinal);
+                valores -= pegouValor;
+                const totalReduzido = valores;
+
+                setValRestante(Number(vlrIncial) - Number(totalReduzido));
+                await api.delete(`formapagamentovenda/${idlinha}`);
+                await api.get('formapagamentovenda').then(res => {
+                    setTipopagam(res.data);
+                });
+                if (Number(valRestante) < Number(totalReduzido)) {
+                    const verSinal = Number(totalReduzido) - Number(vlrIncial);
+                    if (Math.sign(verSinal) === -1) {
+                        setTroco(-1 * verSinal);
+                    } else {
+                        setTroco(verSinal);
+                    }
                 }
-            }
-            if (Number(valRestante) === Number(vlrIncial)) {
-                setTroco(0);
+                if (Number(valRestante) === Number(vlrIncial)) {
+                    setTroco(0);
+                }
+            } else if (idlinha === 0) {
+                alert('Selecione um item acima para excluir');
             }
         }
 
@@ -257,11 +238,13 @@ const FormaPagamento: React.FC = () => {
     }
 
     const voltarPdv = useCallback(() => {
+        alert('Pedido encontre-se aberto');
         window.location.href = '/';
     }, []);
     async function teste(): Promise<void> {
         document.getElementById('teste');
     }
+
     return (
         <Form isClick={isClick}>
             <script />
@@ -283,11 +266,18 @@ const FormaPagamento: React.FC = () => {
                                             Forma de Pagamento
                                         </h1>
                                         <select
+                                            id="selectId"
                                             ref={selectRef}
+                                            onLoad={e =>
+                                                setFormaPId(Number(e.target))
+                                            }
                                             onChange={e => [
-                                                setFormaPId(
-                                                    Number(e.target.value),
-                                                ),
+                                                [
+                                                    setFormaPId(
+                                                        Number(e.target.value),
+                                                    ),
+                                                    clickselect(),
+                                                ],
                                             ]}
                                         >
                                             <option
@@ -301,7 +291,7 @@ const FormaPagamento: React.FC = () => {
                                                 return (
                                                     <option
                                                         key={option.id}
-                                                        value={option.id}
+                                                        value={option.ordem}
                                                     >
                                                         {option.nome}
                                                     </option>
@@ -328,14 +318,14 @@ const FormaPagamento: React.FC = () => {
                                             className="idVR"
                                             id="idVRI"
                                             type="text"
-                                            // onClick={e=>e.target.addEventListener("click", myFunction))}
+                                            ref={inputRef}
+                                            onClick={clickinput}
                                             defaultValue={valRestante}
                                             onChange={({ target }) =>
                                                 setTotalAgora(
                                                     Number(target.value),
                                                 )
                                             }
-                                            ref={inputRef}
                                         />
                                     </div>
                                     <div>
@@ -364,7 +354,7 @@ const FormaPagamento: React.FC = () => {
                                         </thead>
 
                                         <thead>
-                                            {formPagamento
+                                            {tipopagam
                                                 .sort((a, b) =>
                                                     a.ordem > b.ordem ? 1 : -1,
                                                 )
@@ -380,9 +370,9 @@ const FormaPagamento: React.FC = () => {
                                                             {dados.ordem}
                                                         </td>
                                                         <td className="tdh">
-                                                            {'sem nada'
-                                                                ? ''
-                                                                : dados.formapagamento}
+                                                            {
+                                                                dados.formapagamento
+                                                            }
                                                         </td>
                                                         <td className="tdh">
                                                             {dados.valor}
