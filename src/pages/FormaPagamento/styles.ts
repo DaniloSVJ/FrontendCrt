@@ -13,6 +13,9 @@ interface displayNoneFlex {
     isViewTroco: boolean;
 }
 export const Form = styled.div<displayNoneFlex>`
+    .corteste {
+        background-color: #000;
+    }
     color: #fff;
     border: 1px #fff;
     border-radius: 4px;
@@ -142,8 +145,12 @@ export const Form = styled.div<displayNoneFlex>`
         background-color: #fff;
         color: #000;
     }
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
+
+    .activedados {
+        background-color: #3390ff;
+    }
+    .item {
+        background-color: #fff;
     }
     .tdh:hover {
         background-color: #3390ff;
@@ -213,13 +220,6 @@ export const Form = styled.div<displayNoneFlex>`
         background-color: #c7c7c7;
     }
 
-    tr {
-        width: 100%;
-        background-color: #000;
-        &:hover {
-            background-color: #3390ff;
-        }
-    }
     #final {
         display: flex;
         flex-direction: row;

@@ -49,6 +49,17 @@ const FormaPagamento: React.FC = () => {
             ordem: 0,
             formapagamento: '',
             valor: 0,
+            clicado: false,
+        },
+    ]);
+    const [atztipopagam, setAtzTipopagam] = useState([
+        {
+            id: 0,
+            id_forma_pagamet: 2,
+            ordem: 0,
+            formapagamento: '',
+            valor: 0,
+            clicado: false,
         },
     ]);
     const [isClick, setIsclick] = useState(false);
@@ -119,6 +130,18 @@ const FormaPagamento: React.FC = () => {
         });
     }
     let valTotal = 0;
+    useEffect(() => {
+        setAtzTipopagam(tipopagam);
+        const updateddadoscliente = tipopagam.map(d =>
+            d.id === idlinha
+                ? { ...d, clicado: true }
+                : { ...d, clicado: false },
+        );
+        console.log('Chamou a função');
+        console.log(updateddadoscliente);
+        console.log('===============');
+        setTipopagam(updateddadoscliente);
+    }, [idlinha]);
     async function incluir(): Promise<void> {
         const verId = options[formaPId - 1];
         const selref = verId.id;
@@ -145,9 +168,10 @@ const FormaPagamento: React.FC = () => {
                     await api.get(`formapagamentovenda/soma/${0}`).then(res => {
                         valTotal = res.data;
                     });
+                    setAtzTipopagam(tipopagam);
 
                     const tlt = valTotal;
-                    console.log(`o valor do valores é: ${valTotal}`);
+                    console.log(tipopagam);
                     if (Number(vlrIncial) >= Number(tlt)) {
                         setValRestante(Number(vlrIncial) - Number(tlt));
                         setTroco(0);
@@ -381,21 +405,24 @@ const FormaPagamento: React.FC = () => {
                                                 )
                                                 .map(dados => (
                                                     <tr
+                                                        // className={
+                                                        //     dados.clicado
+                                                        //         ? 'activedados'
+                                                        //         : 'item'
+                                                        // }
+                                                        className="corteste"
                                                         onClick={e =>
                                                             setIdLinha(dados.id)
                                                         }
-                                                        className="tdh"
                                                         key={dados.id}
                                                     >
-                                                        <td className="tdh">
-                                                            {dados.ordem}
-                                                        </td>
-                                                        <td className="tdh">
+                                                        <td>{dados.ordem}</td>
+                                                        <td>
                                                             {
                                                                 dados.formapagamento
                                                             }
                                                         </td>
-                                                        <td className="tdh">
+                                                        <td>
                                                             {dados.valor.toLocaleString(
                                                                 'pt-br',
                                                                 {
