@@ -21,21 +21,15 @@ const FormaPagamento: React.FC = () => {
     const [idlinha, setIdLinha] = useState(0);
     const [vlrIncial, setVlrIncial] = useState(0);
     const idVenda = location.search.replace('?', '');
-    const [forma, setForma] = useState('');
-    const [idVendat, setIdVenda] = useState([{ idv: '' }]);
-    // let total1;
+
     const [totalagora, setTotalAgora] = useState(0);
     const [valRestante, setValRestante] = useState(0);
 
-    const [isSelected, setIsSelected] = useState(false);
-    const [valorInput, setValorInput] = useState(0);
-
     const inputRef = useRef<HTMLInputElement>(null);
     const selectRef = useRef<HTMLSelectElement>(null);
-    const inputRefVR = useRef<HTMLInputElement>(null);
+
     const [formaPId, setFormaPId] = useState(1); // PEGA O ID DA CAIXA DE COMBINAÇÃO
     const [formaPNome, setFormaPNome] = useState(''); // PEGA O NOME QUE TÁ NA CAIXA DE COMBINAÇÃO
-    const [totaVenda, setTotaVenda] = useState(0);
 
     // window.addEventListener('load', carrega);
     const carrega = useCallback(() => {
@@ -58,6 +52,8 @@ const FormaPagamento: React.FC = () => {
         },
     ]);
     const [isClick, setIsclick] = useState(false);
+    const [isViewTroco, setIsViewTroco] = useState(false);
+
     async function handleAddRepository(
         event: FormEvent<HTMLFormElement>,
     ): Promise<void> {
@@ -116,7 +112,13 @@ const FormaPagamento: React.FC = () => {
     /// /////////////////////////////////////////////////////////////////
 
     // FUNÇÃO DO BOTÃO INCLUIR///////////////////////////////////////////////////////
-    let valores = 0;
+    const [valores, setValores] = useState(0);
+    async function soma(): Promise<void> {
+        await api.get(`formapagamentovenda/soma/${0}`).then(res => {
+            setValores(res.data);
+        });
+    }
+    let valTotal = 0;
     async function incluir(): Promise<void> {
         const verId = options[formaPId - 1];
         const selref = verId.id;
@@ -129,12 +131,6 @@ const FormaPagamento: React.FC = () => {
 
             if (Vr > 0) {
                 if (Number(verinputref) > 0) {
-                    const valtras = Number(verinputref);
-                    // console.log(`valor input${valtras}`);
-                    valores += valtras;
-
-                    const tlt = valores;
-                    console.log(`valor do valores: ${valores}`);
                     await api.post('formapagamentovenda', {
                         id_forma_pagmet: Number(selref),
                         id_venda: 0,
@@ -143,22 +139,29 @@ const FormaPagamento: React.FC = () => {
                         formapagamento: formaPNome,
                         status: false,
                     });
+                    await api.get('formapagamentovenda').then(res => {
+                        setTipopagam(res.data);
+                    });
+                    await api.get(`formapagamentovenda/soma/${0}`).then(res => {
+                        valTotal = res.data;
+                    });
 
-                    if (Number(valRes) >= Number(tlt)) {
+                    const tlt = valTotal;
+                    console.log(`o valor do valores é: ${valTotal}`);
+                    if (Number(vlrIncial) >= Number(tlt)) {
                         setValRestante(Number(vlrIncial) - Number(tlt));
-
+                        setTroco(0);
                         setIsclick(false);
-                        setTotalAgora(Number(valRes) - Number(tlt));
-
-                        await api.get('formapagamentovenda').then(res => {
-                            setTipopagam(res.data);
-                            // console.log(`direto${res.data}`);
-                        });
-                    } else if (Number(valRes) < Number(tlt)) {
+                        setTotalAgora(Number(vlrIncial) - Number(tlt));
+                        setIsViewTroco(false);
+                        const totalgeral = tipopagam?.reduce(
+                            (acc, current) => acc + current.valor,
+                            0,
+                        );
+                        console.log(`VALOR TOTAL GERAL${totalgeral}`);
+                    } else if (Number(vlrIncial) < Number(tlt)) {
                         setValRestante(0);
-                        await api.get('formapagamentovenda').then(res => {
-                            setTipopagam(res.data);
-                        });
+                        setIsViewTroco(true);
                         const verSinal = Number(tlt) - Number(vlrIncial);
                         if (Math.sign(verSinal) === -1) {
                             setTroco(-1 * verSinal);
@@ -180,30 +183,36 @@ const FormaPagamento: React.FC = () => {
     async function excluir(): Promise<void> {
         async function handleselect(): Promise<void> {
             if (idlinha !== 0) {
-                const linha = tipopagam.findIndex(o => o.id === idlinha);
-                const pegarDados = tipopagam[linha];
-                console.log(`ValorCar${pegarDados}`);
-                const pegouValor = Number(pegarDados.valor);
-
-                valores -= pegouValor;
-                const totalReduzido = valores;
-
-                setValRestante(Number(vlrIncial) - Number(totalReduzido));
                 await api.delete(`formapagamentovenda/${idlinha}`);
                 await api.get('formapagamentovenda').then(res => {
                     setTipopagam(res.data);
                 });
-                if (Number(valRestante) < Number(totalReduzido)) {
+                await api.get(`formapagamentovenda/soma/${0}`).then(res => {
+                    valTotal = res.data;
+                });
+
+                const totalReduzido = valTotal;
+                console.log(totalReduzido);
+                if (Number(vlrIncial) >= Number(totalReduzido)) {
+                    setIsclick(true);
+                    setTroco(0);
+                    setIsViewTroco(false);
+                    setValRestante(Number(vlrIncial) - Number(totalReduzido));
+                    setTotalAgora(Number(vlrIncial) - Number(totalReduzido));
+                } else if (Number(vlrIncial) < Number(totalReduzido)) {
+                    setIsclick(true);
+                    setIsViewTroco(true);
+                    setValRestante(0);
+                    setTotalAgora(0);
                     const verSinal = Number(totalReduzido) - Number(vlrIncial);
+
                     if (Math.sign(verSinal) === -1) {
                         setTroco(-1 * verSinal);
                     } else {
                         setTroco(verSinal);
                     }
                 }
-                if (Number(valRestante) === Number(vlrIncial)) {
-                    setTroco(0);
-                }
+                setIdLinha(0);
             } else if (idlinha === 0) {
                 alert('Selecione um item acima para excluir');
             }
@@ -246,7 +255,7 @@ const FormaPagamento: React.FC = () => {
     }
 
     return (
-        <Form isClick={isClick}>
+        <Form isClick={isClick} isViewTroco={isViewTroco}>
             <script />
             <div id="carroça">
                 <div id="caixa">
@@ -309,7 +318,13 @@ const FormaPagamento: React.FC = () => {
                                         <input
                                             id="idCInp"
                                             className="idcodInp"
-                                            value={totalagora}
+                                            value={totalagora.toLocaleString(
+                                                'pt-br',
+                                                {
+                                                    style: 'currency',
+                                                    currency: 'BRL',
+                                                },
+                                            )}
                                             onClick={e => setIsclick(true)}
                                         />
 
@@ -338,7 +353,13 @@ const FormaPagamento: React.FC = () => {
                                         <input
                                             className="idVR"
                                             id="ValorRestante"
-                                            value={valRestante}
+                                            value={valRestante.toLocaleString(
+                                                'pt-br',
+                                                {
+                                                    style: 'currency',
+                                                    currency: 'BRL',
+                                                },
+                                            )}
                                         />
                                     </div>
                                 </div>
@@ -375,7 +396,15 @@ const FormaPagamento: React.FC = () => {
                                                             }
                                                         </td>
                                                         <td className="tdh">
-                                                            {dados.valor}
+                                                            {dados.valor.toLocaleString(
+                                                                'pt-br',
+                                                                {
+                                                                    style:
+                                                                        'currency',
+                                                                    currency:
+                                                                        'BRL',
+                                                                },
+                                                            )}
                                                         </td>
                                                     </tr>
                                                 ))}
@@ -401,8 +430,13 @@ const FormaPagamento: React.FC = () => {
                                         </button>
                                     </div>
                                     <div id="troco">
-                                        <h1 id="hb">Troco</h1>
-                                        <h1 id="hb2">{troco}</h1>
+                                        <h1 id="hb">Troco: </h1>
+                                        <h1 id="hb2">
+                                            {troco.toLocaleString('pt-br', {
+                                                style: 'currency',
+                                                currency: 'BRL',
+                                            })}
+                                        </h1>
                                     </div>
                                 </div>
                             </div>

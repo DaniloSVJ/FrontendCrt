@@ -10,6 +10,7 @@ export const Title = styled.h1`
 `;
 interface displayNoneFlex {
     isClick: boolean;
+    isViewTroco: boolean;
 }
 export const Form = styled.div<displayNoneFlex>`
     color: #fff;
@@ -227,20 +228,26 @@ export const Form = styled.div<displayNoneFlex>`
         width: 500px;
     }
     #final #troco {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
+        display: none;
     }
     #final #troco #hb {
         margin-left: 100px;
-        font-size: 20px;
+        font-size: 30px;
+        margin-bottom: 5px;
+        margin-top: 5px;
     }
     #final #troco #hb2 {
-        margin-left: 5px;
-        margin-right: 5px;
-        color: #fff;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+        border-radius: 5px;
+        background-color: #fff;
+        font-size: 30px;
+        color: #000;
         width: 100%;
-        font-size: 20px;
     }
 
     ${props =>
@@ -251,6 +258,16 @@ export const Form = styled.div<displayNoneFlex>`
             }
             #idCInp {
                 display: none;
+            }
+        `}
+    ${props =>
+        props.isViewTroco &&
+        css`
+            #final #troco {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-end;
             }
         `}
 `;
