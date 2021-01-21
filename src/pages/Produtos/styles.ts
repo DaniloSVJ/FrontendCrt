@@ -10,112 +10,130 @@ export const Title = styled.h1`
     max-width: 450px;
     line-height: 56px;
     margin-top: 80px;
+
+    .containers {
+        width: 100%;
+        margin: 1000px;
+    }
 `;
 
 export const GRADE = styled.div`
-    //background-color: #e0ffff;
-    display: grid;
-
-    grid-template-areas:
-        'header header header header header header'
-        'menu main main main main main'
-        'menu footer footer footer footer footer';
-    .Header {
-        grid-area: header;
+    border-radius: 4px;
+    border: 1px solid #fff;
+    width: 600px;
+    #DivTitle {
+        width: 570px;
+        margin-left: 10px;
+        margin-right: 10px;
     }
-    .Main {
-        grid-area: main;
-        background-color: #128ac6;
-    }
-    .Menu {
-        grid-area: menu;
-        margin-right: 20px;
-    }
-    .grid-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-    label {
-        color: #fff;
-        font-style: bold;
-        font-size: 30px;
-        align-items: center;
-    }
-    h1 {
-        color: #fff;
-        font-style: bold;
-        font-size: 50px;
-        margin: 25px;
-        text-align: center;
-        align-items: center;
-        padding: 10;
-    }
-    input {
-        width: 250px;
-        background-color: #fff;
-        color: #000;
-        padding: 14px 20px;
-        align-items: center;
-        justify-content: center;
-        margin: 8px 0;
-        border: none;
-        border-radius: 4px;
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-    }
-    button {
-        width: 250px;
-        background-color: #4caf50;
-        color: #000;
-        padding: 14px 20px;
-        margin: 8px 0;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-
-        &:hover {
-            background-color: #45a049;
-        }
-    }
-    #customers {
+    #H1Title {
+        width: 100%;
         font-family: Arial, Helvetica, sans-serif;
-        border-collapse: collapse;
+        text-align: center;
+        color: #fff;
+    }
+    select {
+        width: 100%;
+        height: 25px;
+        border-radius: 4px;
+    }
+
+    #selgrupo {
         width: 100%;
     }
+    #arca {
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        border-radius: 4px;
+        border: 1px solid #fff;
+        display: flex;
+        width: 570px;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding-right: 20px;
 
-    #customers td,
-    #customers th {
-        border: 1px solid #ddd;
-        padding: 8px;
-    }
+        h1 {
+            color: #fff;
+            font-size: 13px;
+            font-family: Arial;
+            font-weight: normal;
+        }
+        .containers {
+            width: 100%;
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
 
-    #customers tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-
-    #customers tr:hover {
-        background-color: #ddd;
-    }
-
-    #customers th {
-        padding-top: 12px;
-        padding-bottom: 12px;
-        text-align: left;
-        background-color: #4caf50;
-        color: white;
-    }
-    #customers td {
-        background-color: #fff;
+        #div1 {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+        }
+        .inicio {
+            width: 100%;
+        }
+        #divinputREF {
+            margin-right: 3px;
+        }
+        #inputREF {
+            width: 100%;
+        }
+        #div2 {
+            width: 100%;
+            margin-left: 10px;
+            margin-right: 100px;
+        }
+        #div3 {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+        }
+        #div3 div {
+            margin-right: 3px;
+        }
+        #div4 {
+        }
+        #div5 {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: flex-end;
+        }
+        input {
+            border-radius: 4px;
+            padding: 10px;
+            height: 20px;
+            border-color: #fff;
+        }
+        .descriptions {
+            width: 100%;
+        }
+        .inputEQ {
+            width: 100%;
+        }
+        .inputValore {
+            width: 100px;
+        }
+        #containersButton {
+            width: 100%;
+        }
+        button {
+            padding: 4px;
+            margin: 3px;
+            border-radius: 4px;
+            border-color: #efefef;
+        }
+        button:hover {
+            background-color: #a9a9a9;
+            border-color: #a9a9a9;
+        }
     }
 `;
-
-// export const Error = styled.span`
-//     display: block;
-//     color: #c53030;
-//     margin-top: 8px;
-// `;
 
 export const Repositories = styled.div``;

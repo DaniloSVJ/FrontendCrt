@@ -124,6 +124,9 @@ export const Form = styled.div<displayNoneFlex>`
         margin-bottom: 7px;
         display: table;
     }
+    tr:hover {
+        cursor: pointer;
+    }
     th {
         background-color: #c0c0c0;
         color: #000;
@@ -142,15 +145,21 @@ export const Form = styled.div<displayNoneFlex>`
     }
 
     td {
-        background-color: #fff;
         color: #000;
     }
 
     .activedados {
         background-color: #3390ff;
     }
+    .activedados td {
+        color: #fff;
+    }
     .item {
         background-color: #fff;
+        color: #000;
+    }
+    .item td {
+        color: #000;
     }
     .tdh:hover {
         background-color: #3390ff;

@@ -5,9 +5,6 @@ import React, {
     useEffect,
     useCallback,
     useRef,
-    TableHTMLAttributes,
-    SelectHTMLAttributes,
-    useImperativeHandle,
 } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
@@ -45,7 +42,7 @@ const FormaPagamento: React.FC = () => {
     const [tipopagam, setTipopagam] = useState([
         {
             id: 0,
-            id_forma_pagamet: 2,
+            id_forma_pagamet: 0,
             ordem: 0,
             formapagamento: '',
             valor: 0,
@@ -137,9 +134,7 @@ const FormaPagamento: React.FC = () => {
                 ? { ...d, clicado: true }
                 : { ...d, clicado: false },
         );
-        console.log('Chamou a função');
-        console.log(updateddadoscliente);
-        console.log('===============');
+
         setTipopagam(updateddadoscliente);
     }, [idlinha]);
     async function incluir(): Promise<void> {
@@ -278,6 +273,16 @@ const FormaPagamento: React.FC = () => {
         document.getElementById('teste');
     }
 
+    useEffect(() => {
+        const updatedFormaPagSel = tipopagam.map(d =>
+            d.id === idlinha
+                ? { ...d, clicado: true }
+                : { ...d, clicado: false },
+        );
+        console.log('Chamou a função');
+        setTipopagam(updatedFormaPagSel);
+    }, [idlinha]);
+
     return (
         <Form isClick={isClick} isViewTroco={isViewTroco}>
             <script />
@@ -307,7 +312,10 @@ const FormaPagamento: React.FC = () => {
                                             onChange={e => [
                                                 [
                                                     setFormaPId(
-                                                        Number(e.target.value),
+                                                        Number(
+                                                            e.target
+                                                                .selectedIndex,
+                                                        ),
                                                     ),
                                                     clickselect(),
                                                 ],
@@ -405,18 +413,19 @@ const FormaPagamento: React.FC = () => {
                                                 )
                                                 .map(dados => (
                                                     <tr
-                                                        // className={
-                                                        //     dados.clicado
-                                                        //         ? 'activedados'
-                                                        //         : 'item'
-                                                        // }
-                                                        className="corteste"
+                                                        className={
+                                                            dados.clicado
+                                                                ? 'activedados'
+                                                                : 'item'
+                                                        }
                                                         onClick={e =>
                                                             setIdLinha(dados.id)
                                                         }
                                                         key={dados.id}
                                                     >
-                                                        <td>{dados.ordem}</td>
+                                                        <td>
+                                                            {dados.ordem || ''}
+                                                        </td>
                                                         <td>
                                                             {
                                                                 dados.formapagamento
@@ -431,7 +440,7 @@ const FormaPagamento: React.FC = () => {
                                                                     currency:
                                                                         'BRL',
                                                                 },
-                                                            )}
+                                                            ) || ''}
                                                         </td>
                                                     </tr>
                                                 ))}
