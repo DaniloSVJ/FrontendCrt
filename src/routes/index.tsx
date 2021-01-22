@@ -3,12 +3,13 @@ import { BrowserRouter, Route } from 'react-router-dom';
 
 import FormaPagamento from '../pages/FormaPagamento/index';
 import Produtos from '../pages/Produtos/index';
+import Cliente from '../pages/Cliente/index';
 import PDV from '../pages/PDV/index';
 // Switch vai garantir que apenas uma rota seja visivel
 // //<Route path="/" exact component={Produtos} />
 const Routes: React.FC = () => (
     <BrowserRouter>
-        <Route path="/" exact component={Produtos} />
+        <Route path="/" exact component={Cliente} />
         <Route path="/formapagamento" exact component={FormaPagamento} />
 
         <Route path="/produtos" exact component={Produtos} />

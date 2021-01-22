@@ -26,6 +26,7 @@ export const GRADE = styled.div`
         margin-left: 10px;
         margin-right: 10px;
     }
+
     #H1Title {
         width: 100%;
         font-family: Arial, Helvetica, sans-serif;
@@ -61,6 +62,7 @@ export const GRADE = styled.div`
             font-family: Arial;
             font-weight: normal;
         }
+
         .containers {
             width: 100%;
             margin-left: 10px;
@@ -98,13 +100,7 @@ export const GRADE = styled.div`
         }
         #div4 {
         }
-        #div5 {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: flex-end;
-            justify-content: flex-end;
-        }
+
         input {
             border-radius: 4px;
             padding: 10px;
@@ -120,11 +116,24 @@ export const GRADE = styled.div`
         .inputValore {
             width: 100px;
         }
-        #containersButton {
+    }
+    #containersButton {
+        width: 100%;
+        padding-right: 15px;
+        #div5 {
             width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: flex-end;
+        }
+
+        .botoes {
+            margin-top: 7px;
+            margin-bottom: 7px;
         }
         button {
-            padding: 4px;
+            padding: 10px;
             margin: 3px;
             border-radius: 4px;
             border-color: #efefef;

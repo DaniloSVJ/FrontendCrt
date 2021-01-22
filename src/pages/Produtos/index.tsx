@@ -43,17 +43,6 @@ const Dashboard: React.FC = () => {
         });
     }, []);
     async function addProduto(): Promise<void> {
-        console.log(nome);
-        console.log(codigo);
-        console.log(custo);
-        console.log(valor_venda);
-        console.log(id_grupo);
-        console.log(estoqueMin);
-        console.log(estoqueMax);
-        console.log(embalagem);
-        console.log(quantidade);
-        console.log(descricaoR);
-        console.log(descricaoGeral);
         await api.post('produto', {
             nome,
             codigo,
@@ -204,13 +193,13 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
                 <div id="containersButton">
-                    <div id="div5">
-                        <div>
+                    <div className="botoes" id="div5">
+                        <div id="bdivS">
                             <button onClick={addProduto} type="button">
                                 Salvar
                             </button>
                         </div>
-                        <div>
+                        <div id="bdiv">
                             <button type="button">Cancelar</button>
                         </div>
                     </div>
