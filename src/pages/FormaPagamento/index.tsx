@@ -267,7 +267,7 @@ const FormaPagamento: React.FC = () => {
 
     const voltarPdv = useCallback(() => {
         alert('Pedido encontre-se aberto');
-        window.location.href = '/';
+        window.location.href = '/produtos';
     }, []);
     async function teste(): Promise<void> {
         document.getElementById('teste');

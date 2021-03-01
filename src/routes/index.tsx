@@ -9,7 +9,7 @@ import PDV from '../pages/PDV/index';
 // //<Route path="/" exact component={Produtos} />
 const Routes: React.FC = () => (
     <BrowserRouter>
-        <Route path="/" exact component={Cliente} />
+        <Route path="/" exact component={FormaPagamento} />
         <Route path="/formapagamento" exact component={FormaPagamento} />
 
         <Route path="/produtos" exact component={Produtos} />
